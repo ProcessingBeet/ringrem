@@ -1,0 +1,15 @@
+[
+  {
+    "Id" : 2,
+    "Description": "Projekt X",
+    "IntervalDays": 7.0,
+    "NotifyHour": 1.0
+
+  },
+  {
+    "Id" : 2,
+    "Description": "Projekt Y",
+    "IntervalDays": 14.0,
+    "NotifyHour": 9.0
+  }
+]
