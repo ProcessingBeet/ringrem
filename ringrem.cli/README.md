@@ -55,7 +55,10 @@ Example:
 Adds a new group to groups.json. Interval stands for how many days should the
 notification be sent. Notify hour is the hour at which the notification is sent.
 
-ringrem add group --name <name> --interval <days> --notify-hour <hour>
+ringrem add group --name <name> --interval <days> --notify-hour <hour> [options]
+
+Options:
+  --desc <text>     Description / reason of conversation note, default is empty string
 
 Example:
   ringrem add group --name "Work" --interval 3 --notify-hour 9

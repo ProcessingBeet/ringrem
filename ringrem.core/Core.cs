@@ -1,41 +1,42 @@
-﻿using System.Data;
-
+﻿using ringrem.models;
+using ringrem.interfaces;
 namespace ringrem.core;
 
 public class Core
 {
-    public static void Run(Models.ILog? log = null)
+    public static void Run(ICommand? command = null, ILog? log = null)
     {
-        
+        if(command is null)
+            Console.WriteLine("Do stuff");
+
     }
 
-    public static void RunCheck(Models.ILog? log)
+    public static void RunCheck(ILog? log)
     {
         var now = DateTime.Now;
         log?.Log("RunCheck start.\nSearching data under paths:");
         string peoplePath = Path.Combine(AppContext.BaseDirectory, "people.json");
         string groupsPath = Path.Combine(AppContext.BaseDirectory, "groups.json");
 
-        var people = DataIO.LoadData<Models.Person>(peoplePath, log);
-        var groups = DataIO.LoadData<Models.Group>(groupsPath, log);
+        var people = DataIO.LoadData<Person>(peoplePath, log);
+        var groups = DataIO.LoadData<Group>(groupsPath, log);
 
         var toNotify = WhoNotify(now, people, groups, log);
         Notify(toNotify, log);
 
-        if(!dryRun)
-            DataIO.SaveData(peoplePath, people, log);
+        DataIO.SaveData(peoplePath, people, log);
     }
-    public static List<Models.Person> WhoNotify(DateTime currentTime, 
-                                               List<Models.Person> people,
-                                               List<Models.Group> groups,
-                                               Models.ILog? log)
+    public static List<Person> WhoNotify(DateTime currentTime, 
+                                               List<Person> people,
+                                               List<Group> groups,
+                                               ILog? log)
     {
         log?.Log("Merging data...");
         var mergedData = from p in people
                          join g in groups on p.GroupId equals g.Id
                          select new { Person = p, Group = g };
         log?.Log("...done.");
-        var toNotify = new List<Models.Person>();
+        var toNotify = new List<Person>();
         foreach (var elt in mergedData)
         {
             DateTime lastSpoke = elt.Person.LastSpoke;
@@ -46,7 +47,7 @@ public class Core
         return toNotify;
     }
 
-    public static bool Notify(List<Models.Person> toNotify, Models.ILog? log)
+    public static bool Notify(List<Person> toNotify, ILog? log)
     {
         try
         {

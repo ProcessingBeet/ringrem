@@ -1,8 +1,11 @@
 ﻿﻿using ringrem.core;
+using ringrem.models;
+using ringrem.interfaces;
 class Program
 {    static void Main(string[] args)
     {
-        Core.Run();
+        ICommand? command = null;
+        Core.Run(command);
     }
 
 }

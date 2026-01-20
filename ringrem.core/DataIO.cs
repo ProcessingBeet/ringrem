@@ -1,9 +1,11 @@
-using System.Diagnostics;
 using System.Text.Json;
+
+using ringrem.models;
+using ringrem.interfaces;
 
 static class DataIO
 {
-    public static List<T> LoadData<T>(string path, Models.ILog? log)
+    public static List<T> LoadData<T>(string path, ILog? log)
     {
         if (!File.Exists(path))
         {
@@ -26,7 +28,7 @@ static class DataIO
 
         
     }
-    public static bool SaveData<T>(string path, List<T> newData, Models.ILog? log)
+    public static bool SaveData<T>(string path, List<T> newData, ILog? log)
     {
         try
         {

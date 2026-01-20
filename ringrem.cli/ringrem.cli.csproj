@@ -2,6 +2,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ringrem.core\ringrem.core.csproj" />
+    <ProjectReference Include="..\ringrem.interfaces\ringrem.interfaces.csproj" />
+    <ProjectReference Include="..\ringrem.models\ringrem.models.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

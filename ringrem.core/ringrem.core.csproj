@@ -1,4 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup> 
+    <ProjectReference Include="..\ringrem.interfaces\ringrem.interfaces.csproj" />
+    <ProjectReference Include="..\ringrem.models\ringrem.models.csproj" />
+  </ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
