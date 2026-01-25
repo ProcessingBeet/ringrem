@@ -3,7 +3,7 @@ using System.Text.Json;
 using ringrem.models;
 using ringrem.interfaces;
 
-static class DataIO
+public static class DataIO
 {
     public static List<T> LoadData<T>(string path, ILog? log)
     {
@@ -41,5 +41,13 @@ static class DataIO
             return false;
         }
         return true;
+    }
+
+    public static bool SaveState(State state, ILog? log)
+    {
+        if( SaveData(state.peoplePath, state.people, log) &&
+            SaveData(state.groupsPath, state.groups, log))
+            return true;
+        return false;
     }
 }

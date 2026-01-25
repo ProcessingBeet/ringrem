@@ -4,32 +4,52 @@ namespace ringrem.core;
 
 public class Core
 {
-    public static void Run(ICommand? command = null, ILog? log = null)
+    public static void Run(ICommand command, State state, ILog? log)
     {
-        if(command is null)
-            Console.WriteLine("Do stuff");
 
+        switch (command)
+        {
+            case RunNotifyCommand comm:
+                if(comm.Now)
+                    RunCheck(state.now.AddDays(36500.0), state.people, state.groups, log);
+                else
+                    RunCheck(state.now, state.people, state.groups, log);
+                break;
+
+            case AddPersonCommand comm:
+                Console.WriteLine("apc");
+                break;
+
+            case RemovePersonCommand comm:
+                Console.WriteLine($"rpc {comm.Id}");
+                break;
+            
+            case AddGroupCommand comm:
+                Console.WriteLine("agc");
+                break;
+
+            case RemoveGroupCommand comm:
+                Console.WriteLine("rgc");
+                break;
+
+            case ListCommand comm:
+                Console.WriteLine("list");
+                break;
+
+            default:
+                throw new NotSupportedException();
+        }
     }
 
-    public static void RunCheck(ILog? log)
+    public static void RunCheck(DateTime now, List<Person> people, List<Group> groups, ILog? log)
     {
-        var now = DateTime.Now;
-        log?.Log("RunCheck start.\nSearching data under paths:");
-        string peoplePath = Path.Combine(AppContext.BaseDirectory, "people.json");
-        string groupsPath = Path.Combine(AppContext.BaseDirectory, "groups.json");
-
-        var people = DataIO.LoadData<Person>(peoplePath, log);
-        var groups = DataIO.LoadData<Group>(groupsPath, log);
-
         var toNotify = WhoNotify(now, people, groups, log);
         Notify(toNotify, log);
-
-        DataIO.SaveData(peoplePath, people, log);
     }
-    public static List<Person> WhoNotify(DateTime currentTime, 
-                                               List<Person> people,
-                                               List<Group> groups,
-                                               ILog? log)
+    public static List<Person> WhoNotify(   DateTime currentTime, 
+                                            List<Person> people,
+                                            List<Group> groups,
+                                            ILog? log)
     {
         log?.Log("Merging data...");
         var mergedData = from p in people
@@ -63,6 +83,10 @@ public class Core
             log?.Log(ex.Message);
             return false;
         }
+        
+    }
+    public static void AddPerson()
+    {
         
     }
 }
