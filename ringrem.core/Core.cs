@@ -6,6 +6,8 @@ public class Core
 {
     public static void Run(ICommand command, State state, ILog? log)
     {
+        var configPath = Path.Combine(AppContext.BaseDirectory, "config.json");
+        var conf = DataIO.LoadData<Config>(configPath, log)[0];
 
         switch (command)
         {
@@ -17,28 +19,29 @@ public class Core
                 break;
 
             case AddPersonCommand comm:
-                Console.WriteLine("apc");
+                AddPerson(state.people, comm, conf, log);
                 break;
 
             case RemovePersonCommand comm:
-                Console.WriteLine($"rpc {comm.Id}");
+                RemovePerson(state.people, comm.Id, log);
                 break;
             
             case AddGroupCommand comm:
-                Console.WriteLine("agc");
+                AddGroup(state.groups, comm, conf, log);
                 break;
 
             case RemoveGroupCommand comm:
-                Console.WriteLine("rgc");
+                RemoveGroup(state.groups, comm.Id, log);
                 break;
 
             case ListCommand comm:
-                Console.WriteLine("list");
+                // nothing ever happens
                 break;
 
             default:
                 throw new NotSupportedException();
         }
+        DataIO.SaveData(configPath, new List<Config> { conf }, log);
     }
 
     public static void RunCheck(DateTime now, List<Person> people, List<Group> groups, ILog? log)
@@ -85,8 +88,87 @@ public class Core
         }
         
     }
-    public static void AddPerson()
+    public static void AddPerson(List<Person> people, AddPersonCommand comm, Config conf, ILog? log)
     {
-        
+        conf.PeopleIdIncrement++;
+        try
+        {
+           people.Add(new Person(conf.PeopleIdIncrement, 
+                          comm.Name, 
+                          comm.LastSpoke,
+                          comm.Description ?? "",
+                          comm.GroupId ?? 0)); 
+        }
+        catch (Exception ex)
+        {
+            log?.Log(ex.Message);
+        }
+    }
+
+    public static void RemovePerson(List<Person> people, int id, ILog? log)
+    {
+        log?.Log("Starting RemovePerson procedure");
+        var searching = true;
+        var i = 0; var len = people.Count();
+        while (searching)
+        {
+            if(people[i].Id == id)
+            {
+
+                log?.Log($"{people[i]} is ...");
+                people.RemoveAt(i);
+                searching = false;
+                log?.Log($"... deleted sucessfully.");
+            }
+            else if (i == len - 1)
+            {
+                searching = false;
+                log?.Log($"There is no person of index {id}");
+            }
+            else
+                i++;
+        }
+    }
+
+    public static void AddGroup(List<Group> groups, AddGroupCommand comm, Config conf, ILog? log)
+    {
+        conf.GroupIdIncrement++;
+        try
+        {
+           groups.Add(new Group(conf.GroupIdIncrement, 
+                          comm.Name, 
+                          comm.Description ?? "",
+                          comm.IntervalDays,
+                          comm.NotifyHour ?? 0)); 
+        }
+        catch (Exception ex)
+        {
+            log?.Log(ex.Message);
+        }
+    }
+
+    public static void RemoveGroup(List<Group> groups, int id, ILog? log)
+    {
+        log?.Log("Starting RemoveGroup procedure");
+        var searching = true;
+        var i = 0; var len = groups.Count();
+        while (searching)
+        {
+            if(groups[i].Id == id)
+            {
+
+                log?.Log($"{groups[i]} is ...");
+                groups.RemoveAt(i);
+                searching = false;
+                log?.Log($"... deleted sucessfully.");
+            }
+            else if (i == len - 1)
+            {
+                searching = false;
+                log?.Log($"There is no group of index {id}");
+            }
+            else
+                i++;
+        }
     }
 }

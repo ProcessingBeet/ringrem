@@ -50,4 +50,26 @@ public static class DataIO
             return true;
         return false;
     }
+
+    public static Dictionary<string, int> LoadConfig(string path, ILog? log)
+    {
+        if (!File.Exists(path))
+        {
+            log?.Log($"File {path} does not exist.");
+            return new Dictionary<string, int>();
+        }
+            
+        try
+        {
+           string json = File.ReadAllText(path);
+           var result = JsonSerializer.Deserialize<Dictionary<string, int>>(json) ?? new Dictionary<string, int>();
+           log?.Log($"{path} loaded succesfully.");
+           return result;
+        }
+        catch (Exception ex)
+        {
+            log?.Log(ex.Message);
+            return new Dictionary<string, int>();
+        }
+    }
 }

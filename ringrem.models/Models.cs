@@ -15,3 +15,9 @@ public record Group(int Id, string Name, string Description, double IntervalDays
     public double IntervalDays {get; set;} = IntervalDays;
     public double NotifyHour {get; set;} = NotifyHour;
 }
+
+public record Config(int PeopleIdIncrement, int GroupIdIncrement)
+{
+    public int PeopleIdIncrement {get; set;} = PeopleIdIncrement;
+    public int GroupIdIncrement {get; set;} = GroupIdIncrement;
+}
