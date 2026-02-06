@@ -3,8 +3,11 @@ using System.Text.Json;
 using ringrem.models;
 using ringrem.interfaces;
 
+
+
 public static class DataIO
 {
+
     public static List<T> LoadData<T>(string path, ILog? log)
     {
         if (!File.Exists(path))

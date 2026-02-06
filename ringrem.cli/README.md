@@ -29,11 +29,10 @@ Examples:
 
 Adds a new person to people.json.
 
-ringrem add person --name <name> [options]
+ringrem add person <name>  <descritpion> [options]
 
 Options:
   --group <groupId> Adds person to group under this id, default is 0
-  --desc <text>     Description / last conversation note, default is empty string
   --last <date>     Last spoke date, default is current date (ISO format, optional)
 
 Example:
