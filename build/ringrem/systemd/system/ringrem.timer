@@ -1,0 +1,10 @@
+[Unit]
+Description=Run ringrem every hour
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+

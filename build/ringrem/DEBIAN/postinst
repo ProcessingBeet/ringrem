@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+chmod +x /usr/lib/ringrem/ringrem.cli
+
+ln -sf /usr/lib/ringrem/ringrem.cli /usr/bin/ringrem
+
+# reload systemd dla timerów
+systemctl daemon-reload
+systemctl enable ringrem.timer
+systemctl start ringrem.timer
+
+exit 0
+

@@ -1,0 +1,6 @@
+[Unit]
+Description=Ringrem notification check
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/ringrem notify

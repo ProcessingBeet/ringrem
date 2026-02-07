@@ -1,0 +1,15 @@
+Package: ringrem
+Version: 1.0-1
+Section: utils
+Priority: optional
+Architecture: all
+Depends: dotnet-runtime-10.0 (>= 10.0)
+Maintainer: Kuba Buraczewski <kb438381@students.mimuw.edu.pl>
+Description: Ringrem
+ For people who constantly forget to check
+ up on their family. Just install it, set up
+ people with whom you want to be in constant 
+ touch. 
+ .
+ Repo:
+ https://github.com/ProcessingBeet/ringrem

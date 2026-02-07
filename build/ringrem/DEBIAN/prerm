@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+systemctl stop ringrem.timer
+systemctl disable ringrem.timer
+systemctl daemon-reload
+
+exit 0
+
